@@ -1,4 +1,4 @@
-from dpdt.load import load_demo, fetch_demo
+from dpdt.demo import Demography
 from dpdt.transformation import *
 from dpdt.simulation import *
 

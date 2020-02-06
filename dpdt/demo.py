@@ -57,7 +57,7 @@ class Demography:
 
     def to_sim_by_age(self, agp, agl, ageing_to_death=False, bind=False):
         """
-
+        Generate simulation-friendly age-specific data
         :param agp:
         :param agl:
         :param ageing_to_death:
@@ -69,11 +69,11 @@ class Demography:
 
     def to_sim_by_age_sex(self, agp, agl, ageing_to_death=False, bind=False):
         """
-
-        :param agp:
-        :param agl:
-        :param ageing_to_death:
-        :param bind:
+        Generate simulation-friendly age-sex-specific data
+        :param agp: a list of integer from 1 to n; the same number for the same group
+        :param agl: labels for age groups
+        :param ageing_to_death: True if ageing in the oldest group lead to death
+        :param bind: bind the data tables or leave them as a dict
         :return:
         """
         pr_f, pr_m = self.calc_sex_ratio_at_birth()
@@ -118,6 +118,6 @@ if __name__ == '__main__':
 
     print(demo)
 
-    print(demo.to_sim_all())
+    print(demo.to_sim_all().head())
 
-    print(demo.to_sim_by_sex())
+    print(demo.to_sim_by_sex().head())

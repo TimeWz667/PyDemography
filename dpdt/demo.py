@@ -1,4 +1,6 @@
+import pandas as pd
 from dpdt.load import fetch_demo, load_demo
+from dpdt.transformation import as_simulation_input_agg
 
 __author__ = 'TimeWz667'
 
@@ -29,10 +31,26 @@ class Demography:
         self.Year1 = max(self.Years)
 
     def to_sim_all(self):
-        pass
+        """
+        Generate simulation-friendly aggregate data
+        :return: a data frame of generated data
+        :rtype: pd.DataFrame
+        """
+        return as_simulation_input_agg(self, 'T', 1)
 
     def to_sim_by_sex(self):
-        pass
+        """
+        Generate simulation-friendly sex-specific data
+        :return: a data frame of generated data
+        :rtype: pd.DataFrame
+        """
+        pr_f = 100 / (self.SexRationBirth + 100)
+        pr_m = 1 - pr_f
+        sim_f = as_simulation_input_agg(self, 'F', pr_f)
+        sim_m = as_simulation_input_agg(self, 'M', pr_m)
+
+        sim_sex = pd.merge(sim_f, sim_m, on='Year', suffixes=['_F', '_M'])
+        return sim_sex
 
     def to_sim_by_age(self, agp, agl, ageing_to_death=False):
         pass
@@ -41,7 +59,7 @@ class Demography:
         pass
 
     def __str__(self):
-        return 'Demography Data(Year:[{}, {}], Age:[0, {}]'.format(
+        return 'Demography Data(Year:[{}, {}], Age:[0, {}])'.format(
             self.Year0, self.Year1, self.DeaT.shape[1] - 1)
 
     __repr__ = __str__
@@ -63,3 +81,5 @@ class Demography:
 if __name__ == '__main__':
     demo = Demography.fetch('ByCountry/United Kingdom')
     print(demo)
+
+    print(demo.to_sim_by_sex())

@@ -9,13 +9,13 @@ __author__ = 'TimeWz667'
 
 def calc_mr_agp(p0, p1, dr, br, ageing):
     """
-
-    :param p0:
-    :param p1:
-    :param dr:
-    :param br:
-    :param ageing:
-    :return:
+    Calculate migration rate for aggregated population
+    :param p0: initial population size
+    :param p1: target population size
+    :param dr: death rate
+    :param br: birth rate
+    :param ageing: ageing rate, default as the invasion of the age span in each group
+    :return: a tuple of (migration rate, mse)
     """
     n_age = len(dr)
 
@@ -42,15 +42,17 @@ def calc_mr_agp(p0, p1, dr, br, ageing):
 
 def as_simulation_input_agp(demo, gp, k, agp, agl, ageing_to_death=False, bind=False):
     """
-
-    :param demo:
-    :param gp:
-    :param k:
-    :param agp:
-    :param agl:
-    :param ageing_to_death:
-    :param bind:
-    :return:
+    Generate simulation-friendly age-specific data
+    :param demo: Demography data
+    :type demo: Demography
+    :param gp: group of population, T for total, F for female, M for male
+    :param k: proportion of birth count
+    :param agp: a list of integer from 1 to n; the same number for the same group
+    :param agl: labels for age groups
+    :param ageing_to_death: True if ageing in the oldest group lead to death
+    :param bind: bind the data tables or leave them as a dict
+    :return: a data frame or a list of generated data
+    :rtype: pd.DataFrame or list
     """
     assert len(agl) > 1
     agp_counts = Counter(agp)
